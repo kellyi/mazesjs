@@ -70,6 +70,10 @@ class Grid {
             .forEach(fn);
     }
 
+    contentsOf(cell) {
+        return ' ';
+    }
+
     toString() {
         let output = '+' + '---+'.repeat(this.cols) + '\n';
 
@@ -81,7 +85,7 @@ class Grid {
                 row
                     .forEach(cell => {
                         const cellForString = cell || new Cell(-1, -1);
-                        const body = '   ';
+                        const body = ` ${this.contentsOf(cell)} `;
                         const eastBoundary = cell.isLinkedTo(cell.east) ? ' ' : '|';
 
                         top += body;

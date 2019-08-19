@@ -47,7 +47,7 @@ if (process.env.BUILD_ENVIRONMENT !== 'development') {
     AlgorithmClass.on(grid);
     console.log(grid.toString());
 } else {
-    const grid = new Grid(4, 4);
+    const grid = new Grid(10, 10);
     Sidewinder.on(grid);
     console.log(grid.toString());
 }

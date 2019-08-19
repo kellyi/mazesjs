@@ -1,9 +1,13 @@
+const _ = require('lodash');
+
+const Distances = require('./distances');
+
 class Cell {
     constructor(row, col) {
         this.row = row;
         this.col = col;
         this.id = `${row},${col}`;
-        this.links_to_other_cells = {};
+        this.linksToOtherCells = {};
         this.north = null;
         this.south = null;
         this.west = null;
@@ -11,7 +15,7 @@ class Cell {
     }
 
     link(cell, bidirectional = true) {
-        this.links_to_other_cells[cell] = true;
+        this.linksToOtherCells[cell] = cell;
 
         if (bidirectional) {
             cell.link(this, false);
@@ -21,7 +25,7 @@ class Cell {
     }
 
     unlink(cell, bidirectional = true) {
-        delete this.links_to_other_cells[cell];
+        delete this.linksToOtherCells[cell];
 
         if (bidirectional) {
             cell.unlink(this, false);
@@ -35,12 +39,12 @@ class Cell {
     }
 
     links() {
-        return Object.keys(this.links_to_other_cells);
+        return Object.values(this.linksToOtherCells);
     }
 
     isLinkedTo(cell) {
         return cell
-            ? Object.keys(this.links_to_other_cells).includes(cell.toString())
+            ? Object.keys(this.linksToOtherCells).includes(cell.toString())
             : false;
     }
 
@@ -64,6 +68,38 @@ class Cell {
         }
 
         return list;
+    }
+
+    distances() {
+        const currentCell = this;
+        const distances = new Distances(currentCell);
+        let frontier = [currentCell];
+
+        while (frontier.length) {
+            let newFrontier = [];
+
+            frontier
+                .forEach(cell => {
+                    cell
+                        .links()
+                        .forEach(linkedCell => {
+                            if (linkedCell === currentCell) {
+                                _.noop();
+                            } else if (!distances.get(linkedCell)) {
+                                distances.set(
+                                    linkedCell,
+                                    distances.get(cell) + 1,
+                                );
+
+                                newFrontier.push(linkedCell);
+                            }
+                        });
+                });
+
+            frontier = newFrontier;
+        }
+
+        return distances;
     }
 }
 
