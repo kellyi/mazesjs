@@ -1,0 +1,17 @@
+{
+  "name": "mazesjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "argparse": "^1.0.10",
+    "lodash": "^4.17.15",
+    "nodemon": "^1.19.1"
+  }
+}
