@@ -4,16 +4,22 @@ class Distances {
     constructor(root) {
         this.root = root;
         this.cells = {
-            [root]: 0,
+            [root]: {
+                distance: 0,
+                cell: root,
+            },
         };
     }
 
     get(cell) {
-        return this.cells[cell];
+        return _.get(this.cells, `${cell.toString()}.distance`, null);
     }
 
     set(cell, distance) {
-        this.cells[cell] = distance;
+        this.cells[cell] = {
+            distance,
+            cell,
+        };
     }
 
     cells() {
@@ -42,6 +48,25 @@ class Distances {
         }
 
         return breadcrumbs;
+    }
+
+    max() {
+        let maxDistance = 0;
+        let maxCell = this.root;
+
+        Object
+            .entries(this.cells)
+            .forEach(([cellID, { distance, cell }]) => {
+                if (distance > maxDistance) {
+                    maxCell = cell;
+                    maxDistance = distance;
+                }
+            });
+
+        return [
+            maxCell,
+            maxDistance,
+        ];
     }
 }
 

@@ -85,7 +85,20 @@ class Grid {
                 row
                     .forEach(cell => {
                         const cellForString = cell || new Cell(-1, -1);
-                        const body = ` ${this.contentsOf(cell)} `;
+                        const body = (() => {
+                            const contents = this.contentsOf(cell);
+
+                            if (contents.length === 1) {
+                                return ` ${contents} `;
+                            }
+
+                            if (contents.length === 2) {
+                                return ` ${contents}`;
+                            }
+
+                            return contents;
+                        })();
+
                         const eastBoundary = cell.isLinkedTo(cell.east) ? ' ' : '|';
 
                         top += body;
