@@ -5,6 +5,7 @@ class Grid {
     constructor(rows, cols) {
         this.rows = rows;
         this.cols = cols;
+        this.size = rows * cols;
 
         this.grid = this.prepareGrid();
         this.configureCells();
@@ -118,6 +119,18 @@ class Grid {
             });
 
         return output;
+    }
+
+    deadends() {
+        let list = [];
+
+        this.eachCell(cell => {
+            if (cell.links().length === 1) {
+                list.push(cell);
+            }
+        });
+
+        return list;
     }
 }
 

@@ -1,9 +1,9 @@
 const DistanceGrid = require('./DistanceGrid');
-const BinaryTree = require('./BinaryTree');
+const AldousBroder = require('./AldousBroder');
 
 function longestPath({
     size = 10,
-    algorithm = BinaryTree,
+    algorithm = AldousBroder,
     startingPosition = [0, 0],
 } = {}) {
     const grid = new DistanceGrid(size, size);
