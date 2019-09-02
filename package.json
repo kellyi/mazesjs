@@ -11,7 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "argparse": "^1.0.10",
+    "canvas": "^2.6.0",
     "lodash": "^4.17.15",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "text2png": "^2.1.0"
   }
 }

@@ -1,5 +1,7 @@
 const fs = require('fs');
+const path = require('path');
 const argparse = require('argparse');
+const text2png = require('text2png');
 
 const Grid = require('./src/grid');
 const DistanceGrid = require('./src/distanceGrid');
@@ -85,8 +87,16 @@ if (process.env.BUILD_ENVIRONMENT !== 'development') {
 
     console.log(grid);
 
-    const otherGrid = new Grid(10, 10);
+    const otherGrid = new DistanceGrid(10, 10);
     RecursiveBacktracker.on(otherGrid);
     console.log(otherGrid.toString());
+
+    fs.writeFileSync('maze.png', text2png(grid.toString(), {
+        font: '50px LispM',
+        localFontName: 'LispM',
+        localFontPath: path.join(__dirname, '../../Library/Fonts/LispM-Monospace(1).ttf'),
+        backgroundColor: 'white',
+        color: 'black',
+    }));
 }
 
