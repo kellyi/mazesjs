@@ -5,6 +5,8 @@ const text2png = require('text2png');
 
 const Grid = require('./src/grid');
 const DistanceGrid = require('./src/distanceGrid');
+const Mask = require('./src/mask');
+
 const BinaryTree = require('./src/binaryTree');
 const Sidewinder = require('./src/sidewinder');
 const AldousBroder = require('./src/aldousBroder');
@@ -13,6 +15,8 @@ const HuntAndKill = require('./src/huntAndKill');
 const RecursiveBacktracker = require('./src/recursiveBacktracker');
 const shortestPath = require('./src/shortestPath');
 const longestPath = require('./src/longestPath');
+const simpleMask = require('./src/simpleMask');
+
 const binaryTree = 'binaryTree';
 const sidewinder = 'sidewinder';
 
@@ -83,6 +87,8 @@ if (process.env.BUILD_ENVIRONMENT !== 'development') {
 
     console.log(maze);
 } else {
+    console.log(simpleMask());
+
     const grid = longestPath({ algorithm: AldousBroder });
 
     console.log(grid);
@@ -90,6 +96,9 @@ if (process.env.BUILD_ENVIRONMENT !== 'development') {
     const otherGrid = new DistanceGrid(10, 10);
     RecursiveBacktracker.on(otherGrid);
     console.log(otherGrid.toString());
+
+    const mask = new Mask(4, 4);
+    mask.setCell(3, 3, false);
 
     fs.writeFileSync('maze.png', text2png(grid.toString(), {
         font: '50px LispM',

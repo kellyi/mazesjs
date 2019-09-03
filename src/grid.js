@@ -2,13 +2,15 @@ const _ = require('lodash');
 const Cell = require('./cell');
 
 class Grid {
-    constructor(rows, cols) {
+    constructor(rows, cols, masked = false) {
         this.rows = rows;
         this.cols = cols;
         this.size = rows * cols;
 
-        this.grid = this.prepareGrid();
-        this.configureCells();
+        if (!masked) {
+            this.grid = this.prepareGrid();
+            this.configureCells();
+        }
     }
 
     prepareGrid() {
@@ -26,23 +28,25 @@ class Grid {
             .grid
             .flat()
             .forEach(cell => {
-                const row = cell.row;
-                const col = cell.col;
+                if (cell) {
+                    const { row } = cell;
+                    const { col } = cell;
 
-                if (row - 1 > -1) {
-                    cell.north = this.getCell(row - 1, col);
-                }
+                    if (row - 1 > -1) {
+                        cell.north = this.getCell(row - 1, col);
+                    }
 
-                if (row + 1 < this.rows) {
-                    cell.south = this.getCell(row + 1, col);
-                }
+                    if (row + 1 < this.rows) {
+                        cell.south = this.getCell(row + 1, col);
+                    }
 
-                if (col - 1 > -1) {
-                    cell.west = this.getCell(row, col - 1);
-                }
+                    if (col - 1 > -1) {
+                        cell.west = this.getCell(row, col - 1);
+                    }
 
-                if (col + 1 < this.cols) {
-                    cell.east = this.getCell(row, col + 1);
+                    if (col + 1 < this.cols) {
+                        cell.east = this.getCell(row, col + 1);
+                    }
                 }
             });
     }
@@ -86,30 +90,33 @@ class Grid {
                 row
                     .forEach(cell => {
                         const cellForString = cell || new Cell(-1, -1);
-                        const body = (() => {
-                            const contents = this.contentsOf(cell);
 
-                            if (contents.length === 1) {
-                                return ` ${contents} `;
-                            }
+                        if (cell) {
+                            const body = (() => {
+                                const contents = this.contentsOf(cell);
 
-                            if (contents.length === 2) {
-                                return ` ${contents}`;
-                            }
+                                if (contents.length === 1) {
+                                    return ` ${contents} `;
+                                }
 
-                            return contents;
-                        })();
+                                if (contents.length === 2) {
+                                    return ` ${contents}`;
+                                }
 
-                        const eastBoundary = cell.isLinkedTo(cell.east) ? ' ' : '|';
+                                return contents;
+                            })();
 
-                        top += body;
-                        top += eastBoundary;
+                            const eastBoundary = cell.isLinkedTo(cell.east) ? ' ' : '|';
 
-                        const southBoundary = cell.isLinkedTo(cell.south) ? '   ' : '---';
-                        const corner = '+';
+                            top += body;
+                            top += eastBoundary;
 
-                        bottom += southBoundary;
-                        bottom += corner;
+                            const southBoundary = cell.isLinkedTo(cell.south) ? '   ' : '---';
+                            const corner = '+';
+
+                            bottom += southBoundary;
+                            bottom += corner;
+                        }
                     });
 
                 output += top;
